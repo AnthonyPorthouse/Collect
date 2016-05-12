@@ -6,4 +6,7 @@ php:
   - '7.0'
 
 install:
-  - composer install
+  - travis_retry composer install --no-interaction
+
+script:
+  - phpunit
