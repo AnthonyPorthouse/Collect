@@ -16,11 +16,12 @@ class Collection
      * collection.
      *
      * @param array $data The data to create the collection from
+     *
      * @return Collection
      */
     public static function create(array $data = [])
     {
-        return new Collection($data);
+        return new self($data);
     }
 
     /**
