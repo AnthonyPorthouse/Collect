@@ -19,12 +19,12 @@ class Collection
         }
 
         if (is_scalar($data)) {
-            $errorMessage = 'data must be an array or otherwise implement \Traversable, got ' . gettype($data);
+            $errorMessage = 'data must be an array or otherwise implement \Traversable, got '.gettype($data);
             throw new \InvalidArgumentException($errorMessage);
         }
 
         if (!($data instanceof \Traversable)) {
-            $errorMessage = 'data must be an array or otherwise implement \Traversable, got ' . get_class($data);
+            $errorMessage = 'data must be an array or otherwise implement \Traversable, got '.get_class($data);
             throw new \InvalidArgumentException($errorMessage);
         }
 
@@ -52,6 +52,7 @@ class Collection
     public function first()
     {
         $this->data->rewind();
+
         return $this->data->current();
     }
 

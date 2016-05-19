@@ -13,7 +13,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 
     public function testAcceptsAGenerator()
     {
-        $function = function() {
+        $function = function () {
             yield 'foo';
             yield 'bar';
         };
