@@ -4,11 +4,44 @@ namespace Collect;
 
 class Collection
 {
-    private $data = [];
+    /** @var \Traversable $data */
+    private $data;
 
-    public function __construct(array $data = [])
+    /**
+     * Collection constructor.
+     *
+     * @param array|\Traversable $data The data to create the collection from.
+     */
+    public function __construct($data = [])
     {
+        if (is_array($data)) {
+            $data = new \ArrayIterator($data);
+        }
+
+        if (is_scalar($data)) {
+            $errorMessage = 'data must be an array or otherwise implement \Traversable, got '.gettype($data);
+            throw new \InvalidArgumentException($errorMessage);
+        }
+
+        if (!($data instanceof \Traversable)) {
+            $errorMessage = 'data must be an array or otherwise implement \Traversable, got '.get_class($data);
+            throw new \InvalidArgumentException($errorMessage);
+        }
+
         $this->data = $data;
+    }
+
+    /**
+     * Returns a new Collection from the given data. This method allows you to chain directly off the created
+     * collection.
+     *
+     * @param array|\Traversable $data The data to create the collection from
+     *
+     * @return Collection
+     */
+    public static function create($data = [])
+    {
+        return new self($data);
     }
 
     /**
@@ -18,7 +51,9 @@ class Collection
      */
     public function first()
     {
-        return reset($this->data);
+        $this->data->rewind();
+
+        return $this->data->current();
     }
 
     /**
