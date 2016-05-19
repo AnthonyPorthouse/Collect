@@ -12,8 +12,8 @@ class Collection
     }
 
     /**
-     * Returns the first element in the collection
-     * 
+     * Returns the first element in the collection.
+     *
      * @return mixed
      */
     public function first()
@@ -22,8 +22,8 @@ class Collection
     }
 
     /**
-     * Returns the last element in the collection
-     * 
+     * Returns the last element in the collection.
+     *
      * @return mixed
      */
     public function last()
