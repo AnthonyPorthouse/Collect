@@ -12,6 +12,18 @@ class Collection
     }
 
     /**
+     * Returns a new Collection from the given data. This method allows you to chain directly off the created
+     * collection.
+     *
+     * @param array $data The data to create the collection from
+     * @return Collection
+     */
+    public static function create(array $data = [])
+    {
+        return new Collection($data);
+    }
+
+    /**
      * Returns the first element in the collection.
      *
      * @return mixed
