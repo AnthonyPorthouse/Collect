@@ -4,6 +4,13 @@ use Collect\Collection;
 
 class CollectionTest extends PHPUnit_Framework_TestCase
 {
+    public function testChainableConstruction()
+    {
+        $first = Collection::create(['foo', 'bar'])->first();
+        
+        $this->assertEquals('foo', $first);
+    }
+
     public function testFirstReturnsFirstElement()
     {
         $collection = new Collection(['foo', 'bar']);
