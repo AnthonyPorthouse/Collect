@@ -25,4 +25,26 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('baz', $collection->last());
     }
+
+    public function testLengthIsCorrect()
+    {
+        $collection = new Collection(['foo', 'bar']);
+        $this->assertEquals(2, $collection->length());
+
+        $collection->add('baz');
+        $this->assertEquals(3, $collection->length());
+    }
+
+    public function testMapReturnsANewCollection()
+    {
+        $collection = new Collection(['foo', 'bar']);
+
+        $newCollection = $collection->map(function ($element) {
+            return strtoupper($element);
+        });
+
+        $this->assertNotSame($collection, $newCollection);
+        $this->assertInstanceOf(Collection::class, $newCollection);
+        $this->assertEquals('FOO', $newCollection->first());
+    }
 }

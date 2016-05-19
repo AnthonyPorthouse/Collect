@@ -11,11 +11,21 @@ class Collection
         $this->data = $data;
     }
 
+    /**
+     * Returns the first element in the collection.
+     *
+     * @return mixed
+     */
     public function first()
     {
         return reset($this->data);
     }
 
+    /**
+     * Returns the last element in the collection.
+     *
+     * @return mixed
+     */
     public function last()
     {
         return end($this->data);
