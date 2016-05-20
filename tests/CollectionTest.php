@@ -30,6 +30,32 @@ class CollectionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testThrowsExceptionOnScalarData()
+    {
+        new Collection(1);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testThrowsExceptionOnNoneGeneratorClosure()
+    {
+        new Collection(function () {
+            return 2;
+        });
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testThrowsExceptionOnNoneTraversibleObject()
+    {
+        new Collection((object) []);
+    }
+
+    /**
      * @dataProvider testProvider
      */
     public function testChainableConstruction($data)
