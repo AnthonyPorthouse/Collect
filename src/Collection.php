@@ -159,4 +159,24 @@ class Collection
 
         return $count;
     }
+
+    /**
+     * Filters the collection of elements based on the passed in closure.
+     *
+     * @param callable $function The function used to determine if an element should be included in the returned
+     *                           collection
+     *
+     * @return Collection
+     */
+    public function filter(callable $function)
+    {
+        $elements = [];
+        foreach ($this->data as $element) {
+            if (call_user_func($function, $element)) {
+                $elements[] = $element;
+            }
+        }
+
+        return new self($elements);
+    }
 }
