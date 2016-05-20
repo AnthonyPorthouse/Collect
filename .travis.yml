@@ -4,7 +4,14 @@ php:
   - '7.0'
 
 install:
+  - travis_retry wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+  - travis_retyr chmod +x coveralls.phar
+  - travis_retry composer self-update
   - travis_retry composer install --no-interaction
 
 script:
-  - phpunit
+  - mkdir build/logs
+  - phpunit --coverage-clover build/logs/coverage.xml
+
+after_success:
+  - travis_retry php coveralls.phar
