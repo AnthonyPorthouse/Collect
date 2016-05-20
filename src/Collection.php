@@ -31,7 +31,7 @@ class Collection
                 throw new \InvalidArgumentException($errorMessage);
             }
 
-           $data = $data();
+            $data = $data();
         }
 
         if ($data instanceof \Generator) {
@@ -89,11 +89,12 @@ class Collection
             $val = $this->data->current();
             $this->data->next();
         }
+
         return $val;
     }
 
     /**
-     * Returns a new Collection with $element added to the end
+     * Returns a new Collection with $element added to the end.
      *
      * @param mixed $element The element to add to the collection
      *
@@ -103,13 +104,13 @@ class Collection
     {
         $data = [];
 
-        $this->each(function($el) use (&$data) {
+        $this->each(function ($el) use (&$data) {
             $data[] = $el;
         });
 
         $data[] = $element;
 
-        return new Collection($data);
+        return new self($data);
     }
 
     /**
@@ -155,6 +156,7 @@ class Collection
             $count++;
             $this->data->next();
         }
+
         return $count;
     }
 }

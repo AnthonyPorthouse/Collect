@@ -6,7 +6,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 {
     public function testProvider()
     {
-        $generator = function() {
+        $generator = function () {
             yield 'foo';
             yield 'bar';
         };
