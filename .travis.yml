@@ -10,7 +10,7 @@ install:
   - travis_retry composer install --no-interaction
 
 script:
-  - mkdir build/logs
+  - mkdir -p build/logs
   - phpunit --coverage-clover build/logs/coverage.xml
 
 after_success:
