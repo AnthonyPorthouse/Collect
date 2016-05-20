@@ -34,7 +34,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testThrowsExceptionOnScalarData()
     {
-        $collection = new Collection(1);
+        new Collection(1);
     }
 
     /**
@@ -42,7 +42,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testThrowsExceptionOnNoneGeneratorClosure()
     {
-        $collection = new Collection(function () {
+        new Collection(function () {
             return 2;
         });
     }
@@ -52,7 +52,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testThrowsExceptionOnNoneTraversibleObject()
     {
-        $collection = new Collection((object) []);
+        new Collection((object) []);
     }
 
     /**
