@@ -16,4 +16,15 @@
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="build/logs/coverage"/>
+        <log type="coverage-clover" target="build/logs/coverage/clover.xml"/>
+    </logging>
 </phpunit>
