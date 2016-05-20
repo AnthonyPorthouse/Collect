@@ -97,4 +97,19 @@ class CollectionTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Collection::class, $newCollection);
         $this->assertEquals('FOO', $newCollection->first());
     }
+
+    /**
+     * @dataProvider testProvider
+     */
+    public function testFilteringElements($data)
+    {
+        $collection = new Collection($data);
+
+        $filteredResults = $collection->filter(function ($el) {
+            return substr($el, 0, 1) === 'b';
+        });
+
+        $this->assertEquals(1, $filteredResults->length());
+        $this->assertEquals('bar', $filteredResults->first());
+    }
 }
