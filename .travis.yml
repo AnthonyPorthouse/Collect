@@ -4,7 +4,11 @@ php:
   - '7.0'
 
 install:
+  - travis_retry composer self-update
   - travis_retry composer install --no-interaction
 
 script:
   - phpunit
+
+after_success:
+  - travis_retry php vendor/bin/coveralls
