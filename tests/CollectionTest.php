@@ -4,59 +4,90 @@ use Collect\Collection;
 
 class CollectionTest extends PHPUnit_Framework_TestCase
 {
-    public function testChainableConstruction()
+    public function testProvider()
     {
-        $first = Collection::create(['foo', 'bar'])->first();
-
-        $this->assertEquals('foo', $first);
-    }
-
-    public function testAcceptsAGenerator()
-    {
-        $function = function () {
+        $generator = function () {
             yield 'foo';
             yield 'bar';
         };
 
-        $collection = new Collection($function());
+        return [
+            [['foo', 'bar']],
+            [new ArrayIterator(['foo', 'bar'])],
+            [$generator()],
+            [$generator],
+        ];
+    }
+
+    /**
+     * @dataProvider testProvider
+     */
+    public function testCreation($data)
+    {
+        $collection = new Collection($data);
 
         $this->assertEquals('foo', $collection->first());
     }
 
-    public function testFirstReturnsFirstElement()
+    /**
+     * @dataProvider testProvider
+     */
+    public function testChainableConstruction($data)
     {
-        $collection = new Collection(['foo', 'bar']);
+        $first = Collection::create($data)->first();
+
+        $this->assertEquals('foo', $first);
+    }
+
+    /**
+     * @dataProvider testProvider
+     */
+    public function testFirstReturnsFirstElement($data)
+    {
+        $collection = new Collection($data);
 
         $this->assertEquals('foo', $collection->first());
     }
 
-    public function testLastReturnsLastElement()
+    /**
+     * @dataProvider testProvider
+     */
+    public function testLastReturnsLastElement($data)
     {
-        $collection = new Collection(['foo', 'bar']);
+        $collection = new Collection($data);
 
         $this->assertEquals('bar', $collection->last());
     }
 
-    public function testAddAddsNewElement()
+    /**
+     * @dataProvider testProvider
+     */
+    public function testAddAddsNewElement($data)
     {
-        $collection = new Collection(['foo', 'bar']);
-        $collection->add('baz');
+        $collection = new Collection($data);
+        $collection = $collection->add('baz');
 
         $this->assertEquals('baz', $collection->last());
     }
 
-    public function testLengthIsCorrect()
+    /**
+     * @dataProvider testProvider
+     */
+    public function testLengthIsCorrect($data)
     {
-        $collection = new Collection(['foo', 'bar']);
+        $collection = new Collection($data);
         $this->assertEquals(2, $collection->length());
 
-        $collection->add('baz');
+        $collection = $collection->add('baz');
         $this->assertEquals(3, $collection->length());
     }
 
-    public function testMapReturnsANewCollection()
+    /**
+     * @dataProvider testProvider
+     */
+    public function testMapReturnsANewCollection($data)
     {
-        $collection = new Collection(['foo', 'bar']);
+        $collection = new Collection($data);
 
         $newCollection = $collection->map(function ($element) {
             return strtoupper($element);

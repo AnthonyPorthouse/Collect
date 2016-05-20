@@ -4,7 +4,7 @@ namespace Collect;
 
 class Collection
 {
-    /** @var \Traversable $data */
+    /** @var \IteratorIterator $data */
     private $data;
 
     /**
@@ -23,12 +23,33 @@ class Collection
             throw new \InvalidArgumentException($errorMessage);
         }
 
+        if ($data instanceof \Closure) {
+            $reflection = new \ReflectionFunction($data);
+
+            if (!$reflection->isGenerator()) {
+                $errorMessage = 'data must be an array or otherwise implement \Traversable, got '.get_class($data);
+                throw new \InvalidArgumentException($errorMessage);
+            }
+
+            $data = $data();
+        }
+
+        if ($data instanceof \Generator) {
+            $newData = [];
+            foreach ($data as $el) {
+                $newData[] = $el;
+            }
+
+            $data = new \ArrayIterator($newData);
+            unset($newData);
+        }
+
         if (!($data instanceof \Traversable)) {
             $errorMessage = 'data must be an array or otherwise implement \Traversable, got '.get_class($data);
             throw new \InvalidArgumentException($errorMessage);
         }
 
-        $this->data = $data;
+        $this->data = new \IteratorIterator($data);
     }
 
     /**
@@ -63,17 +84,33 @@ class Collection
      */
     public function last()
     {
-        return end($this->data);
+        $this->data->rewind();
+        while ($this->data->valid()) {
+            $val = $this->data->current();
+            $this->data->next();
+        }
+
+        return $val;
     }
 
     /**
-     * Adds an element to the collection.
+     * Returns a new Collection with $element added to the end.
      *
      * @param mixed $element The element to add to the collection
+     *
+     * @return Collection
      */
     public function add($element)
     {
-        $this->data[] = $element;
+        $data = [];
+
+        $this->each(function ($el) use (&$data) {
+            $data[] = $el;
+        });
+
+        $data[] = $element;
+
+        return new self($data);
     }
 
     /**
@@ -112,6 +149,14 @@ class Collection
      */
     public function length()
     {
-        return count($this->data);
+        $count = 0;
+
+        $this->data->rewind();
+        while ($this->data->valid()) {
+            $count++;
+            $this->data->next();
+        }
+
+        return $count;
     }
 }
